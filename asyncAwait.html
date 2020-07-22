@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Async Await</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
+<style>
+*{user-select:none;}
+body{
+	position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    background-color: #181818;
+    font-family: 'Nunito', sans-serif;
+}
+#prac{
+	position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 80%;
+    margin: auto;
+    box-sizing: border-box;
+    color: white;
+}
+button{
+    margin: auto;
+}
+.item{
+	margin: auto;
+}
+
+.bar{
+	position: relative;
+	width: 40%;
+    height: 20px;
+    padding: 0;
+    margin: auto;
+    border: 1px solid red;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+.fill{
+	position: absolute;
+    height: 100%;
+    margin: 0;
+    width: 0;
+    top: 0;
+    left: 0;
+	background-color: red;
+    box-sizing: border-box;
+}
+.fillUp{
+    width: 100%;
+ 	-webkit-transition: 2s;
+ 	-moz-transition: 2s;
+	-ms-transition: 2s;
+  	-o-transition: 2s;
+  	transition: 2s;  
+}
+
+.game{
+	color: white;
+    font-family: Monospace;
+    text-align: center;
+    margin: auto;
+}
+
+button{
+	font-size: 25px;
+    box-shadow: 0 0 10 black;
+}
+
+.hid {opacity:0;}
+.red{color:red;}
+.white{color:white;}
+.skyBlue{color:skyBlue;}
+.indigo{color:indigo;}
+.yellow{color:yellow;}
+.green{color:green;}
+.orange{color:orange;}
+.greenYellow{color:greenYellow;}
+</style>
+</head>
+<body>
+
+<div id='prac'>
+	<button onclick='func4(event)'>Start</button><br>
+    <div class='item skyBlue hid'>Initializing...</div>
+    <div class='item skyBlue hid'>Loading phase 1..</div>
+    <div class='bar hid'>
+		<div class='fill'></div>
+	</div>
+    <div class='item skyBlue hid'>Done!</div><br>
+    
+    <div class='item yellow hid'>Initializing...</div>
+    <div class='item yellow hid'>Loading phase 2..</div>
+    <div class='bar hid'>
+		<div class='fill'></div>
+	</div>
+    <div class='item yellow hid'>Done!</div><br>
+    
+    <div class='item white hid'>Initializing...</div>
+    <div class='item white hid'>Loading phase 3..</div>
+    <div class='bar hid'>
+		<div class='fill'></div>
+	</div>
+    <div class='item white hid'>Done!</div><br>
+    
+    <div class='item orange hid'>All configuration done!</div><br>
+    <button id='launch' class='hid'>Launch!</button><br>
+    <div class='game hid'>-Game Launched-</div>
+</div>
+<script>
+//Global
+let items = document.querySelectorAll('.item');
+let launch = document.querySelector('#launch');
+let bar = document.querySelectorAll('.bar');
+let fill = document.querySelectorAll('.fill');
+
+function fillAni(ind){
+	bar[ind].classList.remove('hid');
+	fill[ind].classList.add('fillUp');
+}
+
+function func1(){
+	items[0].classList.remove('hid');
+	return new Promise(function(res,rej){
+        setTimeout(()=>{
+            items[1].classList.remove('hid');
+			fillAni(0);
+            setTimeout(()=>{
+                res();
+                items[2].classList.remove('hid');
+            },2000);
+        },500);
+    });
+}
+
+async function func2(){
+	await func1();
+    items[3].classList.remove('hid');
+    return new Promise(function(res,rej){
+    	items[3].classList.remove('hid');
+    	setTimeout(()=>{
+        	items[4].classList.remove('hid');
+            fillAni(1);
+            setTimeout(()=>{
+            	res();
+                items[5].classList.remove('hid');
+            },2000);
+        },500);
+    });
+}
+
+async function func3(){
+	await func2();
+    items[6].classList.remove('hid');
+    return new Promise(function(res,rej){
+    	items[6].classList.remove('hid');
+        setTimeout(()=>{
+        	items[7].classList.remove('hid');
+            fillAni(2);
+            setTimeout(()=>{
+            	res();
+                items[8].classList.remove('hid');
+            },2000);
+        },500);
+        
+    });
+}
+
+async function func4(event){
+	event.target.style.opacity = '0';
+    await func3();
+    setTimeout(()=>{
+    	items[9].classList.remove('hid');
+        setTimeout(()=>{
+        	launch.classList.remove('hid');
+        },500);
+    },500);
+}
+
+launch.addEventListener('click',function(e){
+	e.target.style.opacity = '0';
+    document.querySelector('.game').classList.remove('hid');
+});
+
+</script>
+</body>
+</html>
